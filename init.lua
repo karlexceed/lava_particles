@@ -7,7 +7,6 @@ lava_particles = {}
 
 local players = {}
 local scan_box = vector.new(32, 8, 32)
-local wind_direction = {x = 0, y = 0}
 
 core.register_on_joinplayer(
 	function(player, last_login)
@@ -35,9 +34,8 @@ function lava_particles.update_particles()
 			lpos_above = vector.offset(lpos, 0, 1, 0)
 			lnode_above = core.get_node(lpos_above)
 			if (lnode_above.name == "air") and (math.random(1,10) == 1) then
-				acc_rand = math.random()
 				core.add_particlespawner({
-					amount = 1,
+					amount = math.random(1,3),
 					time = 2400,
 					node = {name = lnode.name},
 					object_collision = true,
@@ -45,12 +43,12 @@ function lava_particles.update_particles()
 					collision_removal = true,
 					exptime = 1,
 					playername = player,
-					pos = {
-						min = vector.offset(lpos_above, -0.5, 0.45, -0.5),
-						max = vector.offset(lpos_above,  0.5, 0.4,  0.5),
-					},
-					vel = vector.new(0, 0, 0),
-					acc = {x = acc_rand + math.random(-1, 1), y = 5, z = acc_rand + math.random(-1, 1)},
+					minpos = vector.offset(lpos_above, -0.5, 0, -0.5),
+					maxpos = vector.offset(lpos_above,  0.5, 0,  0.5),
+					minvel = {x = -0.8, y = 1, z = -0.8},
+					maxvel = {x = 0.8, y = 3, z = 0.8},
+					minacc = {x = -1, y = 4, z = -1},
+					maxacc = {x = 1, y = 8, z = 1},
 					glow = 7,
 				})
 			end
